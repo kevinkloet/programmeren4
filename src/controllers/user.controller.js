@@ -33,7 +33,7 @@ module.exports = {
                 return next(new ApiError(err.sqlMessage, 401));
             }
 
-            res.status(200).json({login: "successsful login for user " + username + " with results \n" + results}).end();
+            res.status(200).json({login: "successsful login for user " + username}).end();
         });
     },
 
