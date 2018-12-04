@@ -13,7 +13,7 @@ module.exports = {
         const query = 'INSERT INTO `users` (`firstname`, `lastname`, `email`, `password`) VALUES (?, ?, ?, ?);';
 
         pool.query(query, [firstname, lastname, username, password], (err, results) => {
-            res.status(200).json({result: results}).end();
+            res.status(200).json({message: "user added", result: results}).end();
         })
 
     },
@@ -30,7 +30,7 @@ module.exports = {
                 next(new ApiError(err.sqlMessage, 401));
             }
 
-            res.status(200).json({result: results}).end();
+            res.status(200).json({login: "success", user: results}).end();
         });
     },
 
