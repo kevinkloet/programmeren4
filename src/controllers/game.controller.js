@@ -35,7 +35,11 @@ module.exports = {
 		pool.query(query, [id], function(err, rows, fields) {
 			if(err) {
                 console.log(err);
-                return next(new ApiError(err, 404));
+                return next(new ApiError(err, 500));
+			}
+
+			if(!rows.size) {
+				return next(new ApiError("no results found", 404))
 			}
 
             res.status(200).json({result: rows}).end()
