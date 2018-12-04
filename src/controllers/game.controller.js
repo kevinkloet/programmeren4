@@ -2,20 +2,11 @@ const Game = require('../models/game.model')
 const ApiError = require('../models/apierror.model')
 const pool = require('../config/db')
 
-let games = [
-	new Game('Battlefield 5', 'EA', 2018, 'FPS')
-]
-
-// Voorbeeld werken met arrays
-games.forEach((item) => {
-	// doe iets met item
-})
-
 module.exports = {
 
 	getAll(req, res, next) {
 		console.log('gameController.get called')
-        pool.query("SELECT * FROM games", function(err, rows, fields) {
+        pool.query("SELECT * FROM games;", function(err, rows, fields) {
         	if(err) {
         		console.log(err);
         		return next(new ApiError(err, 500));
@@ -30,7 +21,7 @@ module.exports = {
 		const id = req.params.gameId
 		console.log('id = ' + id)
 
-		const query = 'SELECT * FROM games WHERE ID = ?';
+		const query = 'SELECT * FROM games WHERE ID = ?;';
 
 		pool.query(query, [id], function(err, rows, fields) {
 			if(err) {
@@ -50,7 +41,7 @@ module.exports = {
 		console.log('gameController.addNewGame called')
 		console.dir(req.body)
 
-		const query = 'INSERT INTO games (title, producer, year, type) VALUES (?, ?, ?, ?)';
+		const query = 'INSERT INTO games (title, producer, year, type) VALUES (?, ?, ?, ?);';
 
 		pool.query(query, [req.body.name, req.body.producer, req.body.year, req.body.type], function(err, rows, fields) {
 			if(err) {
