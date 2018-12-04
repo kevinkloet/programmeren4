@@ -1,5 +1,6 @@
 const Game = require('../models/game.model')
 const ApiError = require('../models/apierror.model')
+const pool = require('../config/db')
 
 let games = [
 	new Game('Battlefield 5', 'EA', 2018, 'FPS')
@@ -12,9 +13,17 @@ games.forEach((item) => {
 
 module.exports = {
 
-	getAll(req, res) {
+	getAll(req, res, next) {
 		console.log('gameController.get called')
-		res.status(200).json(games).end()
+        pool.query("SELECT * FROM games", function(err, rows, fields) {
+        	if(err) {
+        		console.log(err);
+        		return next(new ApiError(err, 500));
+			}
+
+            res.status(200).json({result: rows}).end()
+        })
+
 	},
 
 	getById(req, res, next) {
