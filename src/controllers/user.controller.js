@@ -35,13 +35,5 @@ module.exports = {
 
             res.status(200).json({login: "successsful login for user " + username}).end();
         });
-    },
-
-    updateUser(req, res, next) {
-        //update the user
-    },
-
-    deleteUser(req, res, next) {
-        //delete the user
     }
 }
