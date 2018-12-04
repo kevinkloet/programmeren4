@@ -50,13 +50,19 @@ module.exports = {
 		console.log('gameController.addNewGame called')
 		console.dir(req.body)
 
-		// add game to array of games
-		const game = new Game(req.body.name, req.body.producer, req.body.year, req.body.type)
-		games.push(game)
+		const query = 'INSERT INTO games (title, producer, year, type) VALUES (?, ?, ?, ?)';
 
-		res.status(200).json({ 
-			message: req.body.name + ' succesvol toegevoegd'
-		}).end()
+		pool.query(query, [req.body.name, req.body.producer, req.body.year, req.body.type], function(err, rows, fields) {
+			if(err) {
+                return next(new ApiError(err, 500));
+			}
+
+            res.status(200).json({
+                message: req.body.name + ' succesvol toegevoegd'
+            }).end()
+		});
+
+
 	}
 
 }
