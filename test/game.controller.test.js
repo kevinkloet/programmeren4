@@ -9,28 +9,31 @@ const endpointToTest = '/api/games'
 
 describe('Games API POST', () => {
     it('should return a valid game when posting a valid object', (done) => {
- 
+
+        const token = require('./authentication.controller.test').token;
+
         chai.request(server)
             .post(endpointToTest)
+            .set('x-access-token', token)
             .send({
                 'name': '  somename  ',
                 'producer': '  someproducer   ',
                 'year': 2020,
-                'type': ' sometype '
+                'type': 'FIRST_PERSON_SHOOTER'
             })
             .end((err, res) => {
                 res.should.have.status(200)
                 res.body.should.be.a('object')
 
-                const Games = res.body
-                Games.should.have.property('name').that.is.an('object')
-
-                const name = Games.name
-                name.should.have.property('firstname').equals('FirstName')
-                name.should.have.property('lastname').equals('LastName')
-                Games.should.have.property('email').equals('user@host.com')
-                Games.should.not.have.property('password')
-                done()
+                // const Games = res.body
+                // Games.should.have.property('name').that.is.an('object')
+                //
+                // const name = Games.name
+                // name.should.have.property('firstname').equals('FirstName')
+                // name.should.have.property('lastname').equals('LastName')
+                // Games.should.have.property('email').equals('user@host.com')
+                // Games.should.not.have.property('password')
+                return done()
         })
     })
 
@@ -48,15 +51,14 @@ describe('Games API POST', () => {
                 res.should.have.status(401)
                 res.body.should.be.a('object')
                 const error = res.body
-                error.should.have.property('message')
-                error.should.have.property('code').equals(401)
-                error.should.have.property('datetime')
-                done()
+                error.should.have.property('error').property('message')
+                error.should.have.property('error').property('code').equals(401)
+                return done()
             })
     })
 
     it('should throw an error when no firstname is provided', (done) => {
-        const token = require('./authentication.test').token
+        const token = require('./authentication.controller.test').token
         chai.request(server)
             .post(endpointToTest)
             .set('x-access-token', token)
@@ -70,11 +72,10 @@ describe('Games API POST', () => {
                 res.body.should.be.a('object')
 
                 const error = res.body
-                error.should.have.property('message')
-                error.should.have.property('code').equals(422)
-                error.should.have.property('datetime')
+                error.should.have.property('ApiError').property('error').property('message')
+                error.should.have.property('ApiError').property('code').equals(422)
 
-                done()
+                return done()
             })
     })
 
@@ -105,8 +106,7 @@ describe('Games API GET', () => {
 
 describe('Games API PUT', () => {
     it('should return the updated Games when providing valid input', (done) => {
-        const token = require('./authentication.test').token
-        // console.log('token = ' + token)
+        const token = require('./authentication.controller.test').token
         chai.request(server)
             .put(endpointToTest + '/0')
             .set('x-access-token', token)
@@ -131,7 +131,7 @@ describe('Games API PUT', () => {
                 // Double check:
                 // Send a GET-request to verify that the Games has been updated.
                 chai.request(server)
-                    .get('/api/Gamess')
+                    .get('/api/games')
                     .set('x-access-token', token)
                     .end((err, res) => {
                         res.should.have.status(200)
@@ -140,7 +140,7 @@ describe('Games API PUT', () => {
                         result[0].name.should.have.property('firstname').equals('NewFirstName')
                         result[0].name.should.have.property('lastname').equals('NewLastName')
 
-                        done()
+                        return done()
                     })
             })
     })

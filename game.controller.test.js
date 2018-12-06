@@ -142,7 +142,6 @@ describe('Games API GET', () => {
 describe('Games API PUT', () => {
     it('should return the updated Games when providing valid input', (done) => {
         const token = require('./authentication.test').token
-        // console.log('token = ' + token)
         chai.request(server)
             .put(endpointToTest + '/0')
             .set('x-access-token', token)

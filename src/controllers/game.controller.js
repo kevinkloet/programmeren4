@@ -5,10 +5,8 @@ const pool = require('../config/db')
 module.exports = {
 
 	getAll(req, res, next) {
-		console.log('gameController.get called')
         pool.query("SELECT * FROM games;", function(err, rows, fields) {
         	if(err) {
-        		console.log(err);
         		return next(new ApiError(err, 500));
 			}
 
@@ -19,13 +17,11 @@ module.exports = {
 
 	getById(req, res, next) {
 		const id = req.params.gameId
-		console.log('id = ' + id)
 
 		const query = 'SELECT * FROM games WHERE ID = ?;';
 
 		pool.query(query, [id], function(err, rows, fields) {
 			if(err) {
-                console.log(err);
                 return next(new ApiError(err, 500));
 			}
 
@@ -34,8 +30,7 @@ module.exports = {
 	},
 
 	addNewGame(req, res, next) {
-		console.log('gameController.addNewGame called')
-		console.dir(req.body)
+		//console.dir(req.body)
 
 		const query = 'INSERT INTO games (title, producer, year, type) VALUES (?, ?, ?, ?);';
 
