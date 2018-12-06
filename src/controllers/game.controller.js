@@ -29,10 +29,6 @@ module.exports = {
                 return next(new ApiError(err, 500));
 			}
 
-			if(rows.size == []) {
-				return next(new ApiError("no results found", 404))
-			}
-
             res.status(200).json({result: rows}).end()
 		});
 	},
