@@ -1,8 +1,8 @@
 const mysql = require('mysql2');
 
 const dbconfig = {
-    host: process.env.DB_HOST || '188.166.109.108',
-    user: process.env.DB_USER || '1006',
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'gamedb_user',
     password: process.env.DB_PASSWORD || 'secret',
     database: process.env.DB_DATABASE || 'gamedb',
     waitForConnections: true,

@@ -37,7 +37,7 @@ module.exports = {
 		});
 	},
 
-	addNewGame(req, res) {
+	addNewGame(req, res, next) {
 		console.log('gameController.addNewGame called')
 		console.dir(req.body)
 
