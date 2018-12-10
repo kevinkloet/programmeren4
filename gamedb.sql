@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `games` (
 ) 
 ENGINE = InnoDB;
 
-INSERT INTO `games` (`title`, `producer`, `year`, `type`) VALUES
-('Battlefield 5', 'EA', 2018, 'FIRST_PERSON_SHOOTER'),
-('Fortnite', 'Epic Games', 2017, 'THIRD_PERSON_SHOOTER'),
-('Minecraft', 'Mojang', 2009, 'ADVENTURE');
+INSERT INTO `games` (`title`, `producer`, `year`, `type`, ``) VALUES
+('Battlefield 5', 'EA', 2018, 'FIRST_PERSON_SHOOTER', 1),
+('Fortnite', 'Epic Games', 2017, 'THIRD_PERSON_SHOOTER', 1),
+('Minecraft', 'Mojang', 2009, 'ADVENTURE', 1);

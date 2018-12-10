@@ -1,6 +1,7 @@
 const Game = require('../models/game.model')
 const ApiError = require('../models/apierror.model')
 const pool = require('../config/db')
+const Auth = require('../util/auth/authentication')
 
 module.exports = {
 
@@ -32,9 +33,19 @@ module.exports = {
 	addNewGame(req, res, next) {
 		//console.dir(req.body)
 
-		const query = 'INSERT INTO games (title, producer, year, type) VALUES (?, ?, ?, ?);';
+		const query = 'INSERT INTO games (title, producer, year, type, userid) VALUES (?, ?, ?, ?, ?);';
+		const token = req.header('x-access-token');
+		let userid = -1;
+		Auth.decodeToken(token, (err, decoded) => {
+			if(err) {
+				return next(new ApiError(err, 500));
+			}
 
-		pool.query(query, [req.body.name, req.body.producer, req.body.year, req.body.type], function(err, rows, fields) {
+			console.dir(decoded);
+			userid = decoded;
+		});
+
+		pool.query(query, [req.body.name, req.body.producer, req.body.year, req.body.type, userid], function(err, rows, fields) {
 			if(err) {
                 return next(new ApiError(err, 500));
 			}

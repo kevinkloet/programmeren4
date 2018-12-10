@@ -19,11 +19,25 @@ module.exports = {
                 return next(new ApiError(err.sqlMessage, 401));
             }
 
-            const token = auth.encodeToken(username);
-            res.status(200).json({
-                message: "user added",
-                token: token
-            }).end();
+            const query = 'SELECT `ID` FROM users WHERE `email` = ? AND password = ?;';
+
+            pool.query(query, [username, password], (err, rows, fields) => {
+                if(err) {
+                    return next(new ApiError(err.sqlMessage, 401));
+                }
+
+                if(rows.length === 1 && password === rows[0].password) {
+                    const token = auth.encodeToken(rows[0].ID);
+
+                    console.dir(token);
+
+                    res.status(200).json({
+                        message: "user added",
+                        token: token
+                    }).end();
+                }
+
+            });
         }) } catch(err) {
             const error = new ApiError(err.message, 500);
             return next(err);
@@ -64,6 +78,8 @@ module.exports = {
                 const error = new ApiError(err.message, 401)
                 return next(error);
             }
+
+            console.dir(payload);
 
             req.user = {
                 id: payload.id

@@ -18,9 +18,9 @@ module.exports = {
         jwt.verify(token, settings.secretkey, (err, decoded) => {
             if (err) {
                 const error = new ApiError(err.message, 401);
-                return callback(error);
+                return callback(error, null);
             }
-
+            return callback(null, decoded);
 
         });
     }
