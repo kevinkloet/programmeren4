@@ -26,10 +26,9 @@ module.exports = {
                     return next(new ApiError(err.sqlMessage, 401));
                 }
 
-                if(rows.length === 1 && password === rows[0].password) {
-                    const token = auth.encodeToken(rows[0].ID);
-
-                    console.dir(token);
+                if(rows.length === 1) {
+                    const id = rows[0].ID;
+                    const token = auth.encodeToken(id);
 
                     res.status(200).json({
                         message: "user added",

@@ -4,11 +4,11 @@ const jwt = require('jsonwebtoken');
 const ApiError = require('../../models/apierror.model')
 
 module.exports = {
-    encodeToken(username) {
+    encodeToken(userID) {
         const payload = {
             exp: moment().add(10, 'days').unix(),
             iat: moment().unix(),
-            sub: username
+            sub: userID
         }
 
         return jwt.sign(payload, settings.secretkey);

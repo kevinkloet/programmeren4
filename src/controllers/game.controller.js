@@ -6,7 +6,9 @@ const Auth = require('../util/auth/authentication')
 module.exports = {
 
 	getAll(req, res, next) {
-        pool.query("SELECT * FROM games;", function(err, rows, fields) {
+		const query = 'SELECT g.ID, g.title, p.name as producer, g.year, g.LaatstGewijzigdOp, u.firstname as creatorName, u.lastname as creatorLastname ' +
+			'FROM games g LEFT JOIN producer p ON g.producer = p.ID LEFT JOIN users u ON g.userid = u.ID;';
+        pool.query(query, function(err, rows, fields) {
         	if(err) {
         		return next(new ApiError(err, 500));
 			}
@@ -19,7 +21,8 @@ module.exports = {
 	getById(req, res, next) {
 		const id = req.params.gameId
 
-		const query = 'SELECT * FROM games WHERE ID = ?;';
+		const query = 'SELECT g.ID, g.title, p.name as producer, g.year, g.LaatstGewijzigdOp, u.firstname as creatorName, u.lastname as creatorLastname ' +
+			'FROM games g LEFT JOIN producer p ON g.producer = p.ID LEFT JOIN users u ON g.userid = u.ID WHERE g.ID = ?;';
 
 		pool.query(query, [id], function(err, rows, fields) {
 			if(err) {
@@ -41,8 +44,8 @@ module.exports = {
 				return next(new ApiError(err, 500));
 			}
 
-			console.dir(decoded);
-			userid = decoded;
+			console.dir(decoded.sub);
+			userid = decoded.sub;
 		});
 
 		pool.query(query, [req.body.name, req.body.producer, req.body.year, req.body.type, userid], function(err, rows, fields) {
